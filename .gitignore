@@ -5,6 +5,7 @@
 runs/
 *.png
 *.jpg
+*.zip
 
 # notebook junk
 .ipynb_checkpoints/
