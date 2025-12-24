@@ -1,0 +1,14 @@
+# weights/data/results
+*.pt
+*.csv
+*.parquet
+runs/
+*.png
+*.jpg
+
+# notebook junk
+.ipynb_checkpoints/
+__pycache__/
+
+# env
+.venv/
