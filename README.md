@@ -1,7 +1,9 @@
 # Bachelor Thesis: Deep Learning–Based Risk Analysis of UK Biobank Atherosclerosis Data Using Electronic Health Records
 
-This repository contains the code developed as part of my bachelor thesis at the **Heinig Lab** and is supervised by Korbinian Träuble
-([Heinig Lab, Helmholtz Munich](https://www.helmholtz-munich.de/en/icb/research-groups/heinig-lab)). The project is conducted within the [Bioinformatics B.Sc. program](https://www.tum.de/studium/studienangebot/detail/bioinformatik-bachelor-of-science-bsc) at **<span style="color:#0065bd;">TUM</span>** (Technical University of Munich) and **<span style="color:#007c30;">LMU</span>** (Ludwig-Maximilians-University of Munich).
+**Author:** Max-Malte Hansen  
+**Supervisor:** Korbinian Träuble  
+
+This repository contains the code developed as part of my bachelor thesis at the **Heinig Lab** ([Heinig Lab, Helmholtz Munich](https://www.helmholtz-munich.de/en/icb/research-groups/heinig-lab)). The project is conducted within the [Bioinformatics B.Sc. program](https://www.tum.de/studium/studienangebot/detail/bioinformatik-bachelor-of-science-bsc) at **<span style="color:#0065bd;">TUM</span>** (Technical University of Munich) and **<span style="color:#007c30;">LMU</span>** (Ludwig-Maximilians-University of Munich).
 
 ## Table of Content
 
