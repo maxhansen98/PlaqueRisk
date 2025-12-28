@@ -19,7 +19,7 @@ The motivation for reproducing these results was
 
 2. In addition to reproducing the original inference results, this reproduction step allows us to explicitly derive image-level plaque counts (0, 1, 2, or 3 detected plaques per image), which are required for further analyses and are not provided as a standalone output in the original setup.
 
-The implementation follows the preprocessing and inference logic described in *Georgakis et al., Deep learning-based carotid plaque detection in population imaging*  and the authors’ reference notebook as closely as possible, while restructuring the workflow into standalone scripts suitable for large-scale execution on DNAnexus.
+The implementation follows the preprocessing and inference logic described in *[Georgakis et al., Deep learning-based carotid plaque detection in population imaging](https://doi.org/10.1101/2024.10.17.24315675)*  and the authors’ reference notebook as closely as possible, while restructuring the workflow into standalone scripts suitable for large-scale execution on DNAnexus.
 <p align="center">
   <img width="902" height="418" alt="image" src="https://github.com/user-attachments/assets/f78d7f12-75a0-4153-9a8e-ed55c3bfe175" />
 </p>
