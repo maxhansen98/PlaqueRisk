@@ -27,3 +27,7 @@ The implementation follows the preprocessing and inference logic described in *[
 **Figure 1:** Example carotid ultrasound image before and after automated plaque detection.
 The left panel shows the preprocessed carotid ultrasound image, while the right panel shows the output of the deep learning–based plaque detection model, with bounding boxes indicating detected plaques and associated confidence scores.  
 Figure adapted from the reference Jupyter notebook provided by Georgakis et al. and illustrates the overall functionality of the inference workflow.
+
+### 1.1 preprocess_ukb_files.py
+
+### 1.2 run_plaque_interference.py
