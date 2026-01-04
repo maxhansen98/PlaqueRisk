@@ -14,7 +14,7 @@ params_inference = cfg["inference"]
 
 def arg_parser():
     p = argparse.ArgumentParser(
-        description="YOLO plaque detection and plaque counter"
+        description="YOLOv8 plaque detection and plaque counter"
     )
 
 #  Inputs:
@@ -145,7 +145,7 @@ def main():
         pd.DataFrame(errors).to_csv(err_path, index=False)
         print("Errors written to:", err_path)
 
-    # plaque counter
+    # plaque counter output
     total = sum(plaque_counts)
     summary = []
     for k, n in enumerate(plaque_counts):

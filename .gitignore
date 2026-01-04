@@ -13,3 +13,6 @@ __pycache__/
 
 # env
 .venv/
+
+# plotting and presentation graphics
+testing_and_plotting/**
