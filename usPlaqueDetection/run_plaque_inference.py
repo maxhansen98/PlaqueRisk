@@ -17,17 +17,17 @@ def arg_parser():
         description="YOLOv8 plaque detection and plaque counter"
     )
 
-#  Inputs:
+    #  Inputs:
     p.add_argument("-m", "--manifest", required=True,
                    help="CSV with columns: participant_id, side, image_path")
     p.add_argument("-w", "--weights", default="best_YOLO27Jan2024.pt")
     p.add_argument("-s", "--save_predictions", action="store_true")
 
-#  Outputs:
+    #  Outputs:
     p.add_argument("-oi", "--out-image-level", default="outputs/image_level.csv")
     p.add_argument("-oc", "--out-counts", default="outputs/plaque_counts.csv")
 
-#  Optional:
+    #  Optional:
     p.add_argument("--device", default="cpu")
 
     return p.parse_args()

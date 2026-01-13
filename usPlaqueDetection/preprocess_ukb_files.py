@@ -9,36 +9,28 @@ EXTRACT_ROOT.mkdir(exist_ok=True)
 def unzip_and_rename(zip_path: Path) -> Path:
     prefix = zip_path.stem
     out_dir = EXTRACT_ROOT / prefix
-    out_dir.mkdir(parents=True, exist_ok=True)
+    out_dir.mkdir(exist_ok=True, parents=True)
 
     with zipfile.ZipFile(zip_path) as z:
         z.extractall(out_dir)
 
-    for f in out_dir.iterdir():
-        if f.is_file() and f.suffix.lower() == ".dcm":
-            parts = f.name.split(".")
-            num = parts[-2]
-            new_name = f"{prefix}_{num}.dcm"
-            f.rename(out_dir / new_name)
+    for f in out_dir.rglob("*.dcm"):
+        parts = f.name.split(".")
+        num = parts[-2]
+        new_name = f"{prefix}_{num}.dcm"
+        f.rename(out_dir / new_name)
 
     return out_dir
 
 
-def is_long_axis(path: Path) -> bool:
-    # NOTE: adapt this to what the notebook uses / your UKB export naming.
-    # If you have a metadata/manifest file, use that instead.
-    name = path.name.lower()
-    return ("long" in name) or ("long_axis" in name) or ("lax" in name)
-
-
 def infer_side(path: Path) -> str:
-    # Best-effort: adapt to your naming. Otherwise put empty or "unknown".
-    name = path.name.lower()
-    if "left" in name or "_l_" in name or "lhs" in name:
+    path_lowercase = str(path).lower()
+    if "left" in path_lowercase:
         return "left"
-    if "right" in name or "_r_" in name or "rhs" in name:
+    if "right" in path_lowercase:
         return "right"
-    return "unknown"
+    else:
+        return "unknown"
 
 
 def infer_participant_id(zip_stem: str) -> str:
@@ -54,13 +46,9 @@ def main(zip_dir: str, out_manifest: str = "manifest.csv"):
     for zp in zips:
         out_dir = unzip_and_rename(zp)
         pid = infer_participant_id(zp.stem)
+        side = infer_side(zp)
 
-        # choose image files (DCM or PNG depending on your export)
-        for img in sorted(out_dir.glob("*.dcm")):
-            if not is_long_axis(img):
-                continue
-            side = infer_side(img)
-
+        for img in sorted(out_dir.rglob("*.dcm")):
             rows.append({
                 "participant_id": pid,
                 "side": side,
