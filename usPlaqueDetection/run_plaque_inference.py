@@ -8,7 +8,7 @@ import cv2
 from tqdm import tqdm
 
 
-cfg = json.load(open("params.json"))
+cfg = json.load(open("config/params.json"))
 params_preprocess = cfg["preprocess"]
 params_inference = cfg["inference"]
 

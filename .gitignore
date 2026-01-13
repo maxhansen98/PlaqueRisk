@@ -16,3 +16,5 @@ __pycache__/
 
 # plotting and presentation graphics
 testing_and_plotting/**
+usPlaqueDetection/weights/**
+usPlaqueDetection/out/**
