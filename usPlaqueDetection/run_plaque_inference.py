@@ -20,7 +20,7 @@ def arg_parser():
     #  Inputs:
     p.add_argument("-m", "--manifest", required=True,
                    help="CSV with columns: participant_id, side, image_path")
-    p.add_argument("-w", "--weights", default="best_YOLO27Jan2024.pt")
+    p.add_argument("-w", "--weights", default="weights/best_YOLO27Jan2024.pt")
     p.add_argument("-s", "--save_predictions", action="store_true")
 
     #  Outputs:
