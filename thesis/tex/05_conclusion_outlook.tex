@@ -1,0 +1,149 @@
+\chapter{Conclusion and Outlook}
+\label{ch:conclusion}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+This thesis set out to identify plasma biomarkers of subclinical atherosclerosis and ended by
+examining the phenotype such a search depends on. Three findings summarise the work.
+
+\paragraph{The pipeline was reproduced faithfully, and the phenotype it yields carries little
+detectable proteomic signal.}
+Re-running the detection pipeline of \textcite{omarov2024deep} across the UK Biobank carotid
+ultrasound collection produced detections for 179{,}611 images from 20{,}014 participants and a
+plaque prevalence of 43.0\,\% at participant level, against the 45\,\% reported by the original
+authors. Tested against the Olink proteomics panel in the 2{,}542 participants for whom both were
+available, this phenotype showed no association that survived correction for multiple testing:
+151 of 2{,}923 proteins reached nominal significance where approximately 146 are expected by
+chance, and the best-performing classifier reached a cross-validated ROC-AUC of 0.541, below the
+0.551 attained by age and sex alone. Age itself was significantly associated after correction and
+produced a visible gradient in the leading principal components, confirming that the analysis
+detects association where association exists.
+
+\paragraph{The base model transfers to an external dataset with a substantial loss of
+specificity, and fine-tuning recovers part of it.}
+On the 48 held-out images of Ar-PlaqSegm1 \cite{rulloni2025arplaqsegm1}, the base model
+reached a sensitivity of 83.3\,\% and a specificity of 62.5\,\%, against 89.5\,\% and 89.2\,\%
+on its own UK Biobank test set. Sensitivity therefore declined by 6.2 percentage points and
+specificity by 26.7. Four segmentation models fine-tuned on the Ar-PlaqSegm1 development set
+were individually indistinguishable from one another on the test set, each reaching a Youden's
+$J$ of 0.625 against the base model's 0.458 and differing only in how they distributed their
+errors. Pooling the predictions of two of them raised $J$ to 0.667 at a sensitivity of 91.7\,\%
+and a specificity of 75.0\,\%, recovering roughly half of the specificity lost to the change of
+data source. All operating points were selected on the validation split rather than on the test
+set; had they been optimised on the test set, the same configuration would have reported 0.792.
+
+\paragraph{The limiting component is confidence ranking, not segmentation.}
+Taking the best-matching predicted instance for each plaque-positive test image, irrespective of
+its confidence score, raises the mean Dice coefficient from 0.655 to 0.794 and leaves no image
+without a correct mask. Both apparent failures of the pooled model disappear: the most severe is
+outlined at a Dice of 0.82 while carrying a confidence of 0.0019, against an operating threshold
+of 0.25. The models locate plaques they do not report. This behaviour was traced to the weighting
+of the training objective, in which the classification term -- the confidence score, for a single
+class -- was weighted twenty-five times lower than the terms governing geometry. Raising that
+weight lifted the median confidence of the correct instance from 0.060 to 0.602 but degraded mask
+quality, placing the optimum between the two settings tested. Attempting to repair the ranking
+after training improved the discrimination of individual instances substantially, from an area
+under the curve of 0.681 to 0.823, yet lowered image-level performance: the features that
+identify a genuine plaque also promote plaque-shaped predictions in plaque-free images. The
+binding constraint is therefore objectness rather than instance ranking, and it is not
+addressable post hoc.
+
+\section{Outlook}
+\label{sec:conclusion-outlook}
+
+\paragraph{Continuing the biomarker search.}
+The analyses of Phases 1A and 1B remain open and can be resumed once access to the UK Biobank
+Research Analysis Platform is restored, or if an alternative cohort linking carotid imaging to
+proteomics becomes available. The objective that motivated the original design is the one still
+worth pursuing: a health-record-based proxy for the imaging phenotype, fitted where imaging and
+records coexist and then evaluated wherever records exist. It would lift the proteomic analysis
+from 2{,}542 participants to the full Olink set, and a null result at that sample size would
+carry weight that a null result at 2{,}542 cannot.
+
+Two considerations govern whether such a proxy would work. The first is its own accuracy: the
+proxy inherits the error of the imaging phenotype it is fitted against and adds its own, so the
+attenuation argument of Section~\ref{sec:domain-shift} applies twice over, and the ceiling on
+what it can detect is set by the model examined in the third part of this thesis. The second is
+specificity. A proxy built from age, blood pressure, lipids and diagnostic codes predicts plaque
+through the risk factors that cause it, and plasma proteins are themselves associated with those
+risk factors; an association between proxy and proteome could therefore reflect the risk-factor
+profile rather than the lesion. Establishing that the proxy carries information about plaque
+beyond its inputs -- for instance by testing whether it improves on those inputs alone within the
+2{,}542 participants where the imaging phenotype is available -- is a prerequisite for
+interpreting anything found at the larger sample size.
+
+Two smaller changes to the original design are also warranted. The clinical baseline should use
+age at the imaging visit rather than age at recruitment, since the plaque phenotype derives from
+the former and the interval between the two varies between participants. And the comparison
+against an independent risk estimate, which Phase 1B was also to provide, would still help
+determine whether the null result originates in the phenotype or in the proteomic data.
+
+\paragraph{Avoiding the discrete phenotype altogether.}
+The attenuation argument that motivates this thesis applies to a pipeline that first reduces an
+image to a binary label and then correlates that label with molecular data. End-to-end multimodal
+fusion, in which image and tabular data enter a single model jointly, never forms the discrete
+phenotype and therefore does not incur the associated loss of information. The approach is
+established across medical imaging and health-record data more generally
+\cite{huang2020fusion}, and \textcite{stamos2025} reports an instance of it for carotid
+plaque risk stratification, with imaging contributing the greater part of the signal and tabular
+data a smaller complement. Applying it at cohort scale, with the imaging arm initialised from a
+model of the kind developed here, is a natural continuation.
+
+\paragraph{Making results comparable across studies.}
+Section~\ref{sec:discussion-literature} sets out why the published figures for carotid plaque
+detection cannot be compared with one another: each was obtained on data held privately by the
+group that produced it. The evaluation reported here differs in that its test partition is
+public, so the figures can be recomputed and any later model placed beside them without
+renegotiating data access. Generalising that is less a methodological problem than a matter of
+convention. Several openly available carotid ultrasound datasets, from different centres, devices
+and case mixes, together with the practice of reporting on all of them, would turn the aggregate
+domain-shift estimate obtained here into a decomposition by factor: how much of the loss is the
+device, how much the population, how much the operator. Evaluating on one external dataset
+establishes that transfer is imperfect; evaluating on several would establish why.
+
+\paragraph{Establishing which differences are real.}
+The four fine-tuned models could not be separated on 48 test images, in which one image
+corresponds to 4.2 percentage points of sensitivity. Conclusions about the classification loss
+weight, the choice of architecture or the value of ensembling therefore rest on differences that
+the available evaluation set cannot resolve. Cross-validation over the full development set would
+provide a mean and a spread instead of a single point estimate, at a cost of roughly five
+training runs.
+
+\paragraph{Encoding the diagnostic criterion.}
+The false positives that both models share follow the vessel wall over an extended stretch
+rather than enclosing a focal protrusion, and are systematically thinner than true plaque
+annotations. This is consistent with a model that classifies each candidate region on its own
+appearance, whereas the diagnostic criterion is relative: a plaque exceeds 50\,\% of the
+\emph{surrounding} intima-media thickness. Supplying that comparison explicitly -- by segmenting
+the wall as a second class, or by providing local wall thickness as an additional input -- would
+target the dominant failure mode directly, rather than hoping the model infers the criterion from
+examples.
+
+\paragraph{Using the discarded frames.}
+Main-axis selection reduced 179{,}611 UK Biobank images to 42{,}954, discarding 76\,\% of the
+material. Carotid ultrasound acquisitions are cine loops, and the discarded frames carry motion
+information that a single-frame model cannot use. Spatiotemporal approaches to plaque
+characterisation have been proposed but are computationally demanding; whether they repay that
+cost at cohort scale is untested.
+
+\paragraph{Extending the annotated material.}
+The one test image that no model segments correctly even under ideal confidence ranking, and the
+smallest plaque in the test set, both point to under-represented regions of the training
+distribution: plaques in the smallest 6\,\% of the annotated size range are supported by only 28
+training instances. Targeted annotation of small and atypical plaques would address this more
+efficiently than uniformly enlarging the dataset.
+
+\paragraph{Closing remark.}
+This thesis set out to look for molecular markers of a disease and ended by examining how that
+disease is measured. The two are not separate undertakings. An association study is bounded by
+the quality of the variables it relates, and where one of those variables is produced by a model
+rather than observed, the error of that model becomes part of the epidemiology. The proteomic
+analysis returned no signal, and nothing established here settles whether that is because no
+signal exists or because the phenotype was too coarse to carry one. What the work does establish
+is how large the measurement gap becomes outside the cohort the model was built in, which part of
+it is the representation and which the threshold, and that in one specific respect the gap is
+smaller than it appears: the models outline plaques they decline to report, and the deficit lies
+in how the training objective was weighted rather than in what the network can see. Examining the
+instrument before trusting what it measures is not a detour from the biological question; it is
+the step the answer rests on.

@@ -1,33 +1,76 @@
-# Bachelor Thesis: Deep Learning–Based Risk Analysis of UK Biobank Atherosclerosis Data Using Electronic Health Records
+# Deep Learning-Based Risk Analysis of UK Biobank Atherosclerosis Data
 
-**Author:** Max-Malte Hansen  
-**Supervisor:** Korbinian Träuble  
+**Author:** Max-Malte Hansen
+**Advisor:** M.Sc. Korbinian Träuble · **Supervisor:** Dr. Matthias Heinig
 
-This repository contains the code developed as part of my bachelor thesis at the **Heinig Lab** ([Heinig Lab, Helmholtz Munich](https://www.helmholtz-munich.de/en/icb/research-groups/heinig-lab)). The project is conducted within the [Bioinformatics B.Sc. program](https://www.tum.de/studium/studienangebot/detail/bioinformatik-bachelor-of-science-bsc) at **<span style="color:#0065bd;">TUM</span>** (Technical University of Munich) and **<span style="color:#007c30;">LMU</span>** (Ludwig-Maximilians-University of Munich).
+Code and thesis for a bachelor's project carried out at the
+[Heinig Lab, Helmholtz Munich](https://www.helmholtz-munich.de/en/icb/research-groups/heinig-lab),
+within the [Bioinformatics B.Sc. programme](https://www.tum.de/studium/studienangebot/detail/bioinformatik-bachelor-of-science-bsc)
+of TUM and LMU Munich.
 
-## Table of Content
+The work asks whether circulating proteins carry a detectable signature of subclinical carotid
+atherosclerosis, and examines the imaging model that produces the phenotype such a search
+depends on.
 
-1. [Reproduction of Georgakis Lab Results](#1-reproduction-of-georgakis-lab-results)
+## Repository layout
 
-## 1. Reproduction of Georgakis Lab Results
+The two blocks follow the division used in the thesis: the first works at cohort scale on UK
+Biobank, the second on the external dataset Ar-PlaqSegm1.
 
-As a first step, the results of the carotid plaque detection pipeline developed by the Georgakis Lab are reproduced using UK Biobank carotid ultrasound data.
+| Path | Contents |
+|------|----------|
+| `block1_cohort/` | Phase 1 --- UK Biobank: cohort scan, pipeline reproduction, proteomics and health-record analyses |
+| `block2_detection/` | Phase 2 --- Ar-PlaqSegm1: dataset construction, fine-tuning, evaluation and thesis figures |
+| `common/` | Shared modules: `paths.py` resolves all data locations, `figlabel.py` holds the figure styling |
+| `thesis/` | LaTeX sources, figures and bibliography |
+| `analysis/`, `reference/` | Proteomics summaries and background PDFs, both excluded from version control |
 
-The motivation for reproducing these results was
+Each block separates `scripts/` from `results/`, and `block2_detection/data/` holds the image
+data and model checkpoints. Everything except the scripts is excluded from version control.
 
-1. Due to data protection and access restrictions, the original results and intermediate outputs cannot be directly shared. Re-running the pipeline on the UK Biobank Research Analysis Platform is therefore necessary to obtain the corresponding outputs.
+Data paths are resolved from the repository root by `common/paths.py`, so the scripts run
+regardless of the working directory.
 
-2. In addition to reproducing the original inference results, this reproduction step allows us to explicitly derive image-level plaque counts (0, 1, 2, or 3 detected plaques per image), which are required for further analyses and are not provided as a standalone output in the original setup.
+## Pipeline
 
-The implementation follows the preprocessing and inference logic described in *[Georgakis et al., Deep learning-based carotid plaque detection in population imaging](https://doi.org/10.1101/2024.10.17.24315675)*  and the authors’ reference notebook as closely as possible, while restructuring the workflow into standalone scripts suitable for large-scale execution on DNAnexus.
-<p align="center">
-  <img width="902" height="418" alt="image" src="https://github.com/user-attachments/assets/f78d7f12-75a0-4153-9a8e-ed55c3bfe175" />
-</p>
+**Cohort-scale inference.** `preprocess_ukb_files.py` extracts the image archives and writes the
+manifest; `run_plaque_inference.py` applies the base detection model across it;
+`merge_main_axis.py` aggregates the result into per-participant plaque counts. These stages run
+on the UK Biobank Research Analysis Platform.
 
-**Figure 1:** Example carotid ultrasound image before and after automated plaque detection.
-The left panel shows the preprocessed carotid ultrasound image, while the right panel shows the output of the deep learning–based plaque detection model, with bounding boxes indicating detected plaques and associated confidence scores.  
-Figure adapted from the reference Jupyter notebook provided by Georgakis et al. and illustrates the overall functionality of the inference workflow.
+**Dataset construction.** `prepare_yolo_seg_dataset.py` converts the Ar-PlaqSegm1 masks into
+polygon labels; `prepare_yolo_det_dataset.py` derives the corresponding bounding-box dataset used
+for the detection control.
 
-### 1.1 preprocess_ukb_files.py
+**Training.** `finetune_yolo_seg.py` and `finetune_yolo_det.py` fine-tune the segmentation and
+detection models. `run_cv.py` provides cross-validation over the full development set.
 
-### 1.2 run_plaque_interference.py
+**Evaluation.** `evaluate_seg_testset.py` evaluates a checkpoint with a confidence sweep;
+`compare_variants.py` compares single models and pooled combinations; `threshold_on_val.py`
+implements the reporting protocol, in which every operating point is selected on the validation
+split; `rescore_instances.py` fits and evaluates the post-hoc instance re-scorer.
+
+**Figures.** `make_appendix_gallery.py`, `make_qualitative_figure.py`,
+`make_echogenicity_figure.py` and `make_pr_curves.py` regenerate the image figures of the thesis
+from the data and the model checkpoints, so that every panel and every number printed on it is
+recomputed rather than transcribed. `common/figlabel.py` holds the shared panel styling.
+
+## Data
+
+Ar-PlaqSegm1 is publicly available
+([Mendeley Data, doi:10.17632/8srkpz52dy.1](https://doi.org/10.17632/8srkpz52dy.1)).
+
+UK Biobank data are accessible only through the Research Analysis Platform under an approved
+application and may not be redistributed. Nothing derived from individual-level UK Biobank data
+is tracked in this repository; the corresponding paths are excluded in `.gitignore`.
+
+## Environment
+
+Python 3.12 with `ultralytics` 8.3.248, `torch` 2.9.1, `opencv-python` 4.12.0.88, `numpy` 2.2.6,
+`pandas` 2.3.3, `scikit-learn` 1.9.0, `scipy` 1.17.1 and `matplotlib` 3.9.2. Segmentation models
+were trained on Apple silicon using the Metal Performance Shaders backend; cohort-scale inference
+ran on platform-provided cloud instances.
+
+## Licence
+
+MIT, see `LICENSE`.

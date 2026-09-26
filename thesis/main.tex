@@ -1,0 +1,257 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{bbold}
+\geometry{a4paper,left=2.5cm,right=2.5cm, top=2.5cm, bottom=2.5cm}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\usepackage[english, german]{babel} 
+\usepackage[printonlyused]{acronym}
+\usepackage[hidelinks]{hyperref}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{tabularx}
+\usepackage{tabulary}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{ltcaption} % enables bottom captions for longtable
+\captionsetup[longtable]{justification=justified}       
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage{placeins}
+\usepackage{pifont}
+\usepackage{fontawesome5}
+
+\usepackage{setspace}
+\setstretch{1.2}
+
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  columns=fullflexible,
+}
+\usepackage{color}
+\usepackage{xcolor}
+
+\definecolor{todobgcolor}{RGB}{235, 229, 167}
+\definecolor{todobordercolor}{RGB}{181, 178, 147}
+\usepackage[
+  color=todobgcolor,
+  linecolor=todobordercolor,
+  bordercolor=todobordercolor
+]{todonotes}
+
+
+\usepackage{fontspec}
+
+\usepackage{titlesec} 
+
+% headlines definition
+\titleformat{\chapter}{\LARGE\sffamily}{\thechapter\quad}{0em}{}
+\titleformat{\section}{\Large\sffamily}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\sffamily}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\large\sffamily}{\thesubsubsection}{1em}{}
+
+\titlespacing*{\chapter}{0pt}{0pt}{30pt}
+
+% disable indent after new line
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\newcommand*\justify{%
+  \fontdimen2\font=0.4em% interword space
+  \fontdimen3\font=0.2em% interword stretch
+  \fontdimen4\font=0.1em% interword shrink
+  \fontdimen7\font=0.1em% extra space
+  \hyphenchar\font=`\-% allowing hyphenation
+}
+
+\renewcommand{\texttt}[1]{%
+  \begingroup
+  \ttfamily
+  \begingroup\lccode`~=`/\lowercase{\endgroup\def~}{/\discretionary{}{}{}}%
+  \begingroup\lccode`~=`[\lowercase{\endgroup\def~}{[\discretionary{}{}{}}%
+  \begingroup\lccode`~=`.\lowercase{\endgroup\def~}{.\discretionary{}{}{}}%
+  \catcode`/=\active\catcode`[=\active\catcode`.=\active
+  \justify\scantokens{#1\noexpand}%
+  \endgroup
+}
+
+\newcommand{\beginappendix}{%
+        \setcounter{table}{0}
+        \renewcommand{\thetable}{S\arabic{table}}%
+        \renewcommand{\tablename}{Supplementary Table}
+        \setcounter{figure}{0}
+        \renewcommand{\figurename}{Supplementary Figure}
+        \renewcommand{\thefigure}{S\arabic{figure}}%
+     }
+
+% literature
+\RequirePackage[backend=biber,
+sorting=none,
+style=numeric-comp,
+sortcites=true,
+maxcitenames=2,
+mincitenames=1,
+maxbibnames=3,
+date=year,
+isbn=false,
+firstinits=true,
+doi=true,
+terseinits=false,
+autocite=inline,
+uniquename=false,
+uniquelist=false,
+block=none,
+hyperref=true,
+]{biblatex}
+\addbibresource{bibliography/bib.bib}
+
+% Family names in small caps, in citations and in the bibliography alike.
+% \mkbibnamefamily is the current biblatex hook; \mkbibnamelast is its
+% pre-3.3 name and is redefined too so the setting survives older installs.
+\AtBeginDocument{%
+  \renewcommand*{\mkbibnamefamily}[1]{\textsc{#1}}%
+  \providecommand*{\mkbibnamelast}[1]{\textsc{#1}}%
+  \renewcommand*{\mkbibnamelast}[1]{\textsc{#1}}%
+}
+
+
+\title{
+    % TODO: Thesis title (English)
+    Your Thesis Title Goes Here
+}
+
+\begin{document}
+\pagenumbering{alph}
+\begin{titlepage}
+
+\sffamily
+
+\begin{center}
+
+
+% Oberer Teil der Titelseite:
+\includegraphics[width=0.3\textwidth]{figures/logo2.png}
+\hfill
+\includegraphics[width=0.4\textwidth]{figures/logo1.png}  
+\\[5cm]
+
+{\Large Bioinformatics Program}\\[0.5cm]
+{\Large Technical University of Munich}\\[0.5cm]
+{\Large Ludwig-Maximilians-Universität München}\\[2cm]
+{\Large Bachelor's Thesis in Bioinformatics}\\[1.5cm]
+
+% Title
+\HRule \\[0.4cm]
+{ \huge \bfseries Using Artificial Object Detection \vspace{0.1cm} for Atherosclerosis Risk Scores}\\[0.4cm]
+
+\HRule \\[1.5cm]
+
+{\Large Max-Malte Hansen}\\[2.5cm]
+
+\vfill
+\end{center}
+\end{titlepage}
+
+
+%%LR comprehensive title
+\begin{titlepage}
+{\sffamily
+
+
+\begin{center}
+\includegraphics[width=0.3\textwidth]{figures/logo2.png}
+\hfill
+\includegraphics[width=0.4\textwidth]{figures/logo1.png}  
+\\[2cm]  
+
+
+{\Large Bioinformatics Program}\\[0.5cm]
+{\Large Technical University of Munich}\\[0.5cm]
+{\Large Ludwig-Maximilians-Universität München}\\[0.8cm]
+{\Large Bachelor's Thesis in Bioinformatics}\\[1cm]
+{\textbf{\LARGE Using Artificial Object Detection for Atherosclerosis Risk Scores}}\\[0.5cm]
+{\textbf{\LARGE Ihr Thesistitel hier (Deutsch)}}\\[1.8cm]
+
+
+\end{center}
+
+
+\begin{center}
+\begingroup
+\fontsize{15}{13.3}\selectfont 
+  \begin{tabular}{ll}
+    Author:& Max-Malte Hansen\\
+    Supervisors: &  Dr. Matthias Heinig\\
+    &Center for Computational Biology (ICB)\\
+    &Helmholtz Munich, 85764 Neuherberg, Germany\\[1.2pt]
+    Advisor:        &  M.Sc. Korbinian Träuble\\
+    &Center for Computational Biology (ICB)\\
+    &Helmholtz Munich, 85764 Neuherberg, Germany\\[1.2pt]
+    Submitted:     &  DD.MM.YYYY
+  \end{tabular}
+\endgroup
+\end{center}
+
+
+}% end title page
+
+\end{titlepage}
+
+\setsansfont{FreeSans}
+\renewcommand{\familydefault}{\sfdefault}
+\sffamily
+
+\cleardoublepage
+\pagenumbering{gobble} % turn off page numbering completely
+\include{tex/08_statement}
+
+\cleardoublepage
+\pagenumbering{roman}  % start Roman page numbering now
+\pagestyle{plain}
+
+\include{tex/00_abstract}
+
+\selectlanguage{german}
+\include{tex/00_zusammenfassung}
+\selectlanguage{english}
+
+% Depth 3 numbers chapter/section/subsection/subsubsection and leaves
+% \paragraph as an unnumbered run-in heading, which is its intended use.
+% At depth 5 a \paragraph placed directly under a \section renders as
+% e.g. 5.2.0.0.3, because the intermediate counters are zero.
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+\footnotesize{
+\tableofcontents}\normalsize
+\markboth{Contents}{Contents}
+\newpage
+
+\pagenumbering{arabic}
+
+\include{tex/01_introduction_background}
+\include{tex/02_material_methods}
+\include{tex/03_results}
+\include{tex/04_discussion}
+\include{tex/05_conclusion_outlook}
+\include{tex/06_code_availability}
+\include{tex/07_acknowledgements}
+
+\include{tex/98_abbreviations}
+
+\printbibliography[title = {References}, heading=bibintoc]
+
+\include{tex/99_appendix}
+
+
+
+
+\end{document}

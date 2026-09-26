@@ -1,0 +1,32 @@
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+Carotid plaque is a marker of systemic atherosclerosis, but it is not recorded as a variable in
+population cohorts: it exists only implicitly, in ultrasound images that no one has read. Any
+analysis relating plaque to molecular data must therefore begin by producing the phenotype with a
+model, and is bounded by the quality of that production step. This thesis sets out to identify
+plasma proteins associated with subclinical carotid atherosclerosis, and examines the measurement
+on which such a search depends.
+
+A published detection model was re-run across the UK Biobank carotid ultrasound collection,
+yielding detections for 179{,}611 images from 20{,}014 participants and a plaque prevalence of
+43.0\,\% against the 45\,\% originally reported. Tested against the Olink proteomic panel in the
+2{,}542 participants with both measurements, this phenotype showed no association surviving
+correction for multiple testing: 151 of 2{,}923 proteins reached nominal significance where 146
+are expected by chance, and the best classifier attained a cross-validated ROC-AUC of 0.541,
+below the 0.551 of age and sex alone. Age was significantly associated in the same data,
+confirming that the analysis detects association where association exists.
+
+Because a misclassified exposure attenuates estimated associations in proportion to Youden's $J$,
+the model was then evaluated outside its development cohort, on a public Argentinian dataset. Its
+specificity fell from 89.2\,\% to 62.5\,\% while sensitivity declined only from 89.5\,\% to
+83.3\,\%. Instance segmentation models fine-tuned on that dataset raised $J$ from 0.458 to 0.625,
+and pooling two of them to 0.667, at operating points selected on validation rather than test
+data. A detection control trained on the same images matched this, locating the improvement in
+the adaptation rather than in the segmentation formulation.
+
+Selecting the best-matching predicted instance irrespective of its score raises the mean Dice
+coefficient from 0.655 to 0.794 and leaves no image without a correct mask: the models outline
+plaques they decline to report. This was traced to the training objective, in which the
+confidence term was weighted twenty-five times below the terms governing geometry. The limiting
+component is therefore the image-level decision, not segmentation quality.

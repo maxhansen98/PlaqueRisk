@@ -1,0 +1,28 @@
+{
+  "name": "us_plaque_worker",
+  "title": "Plaque Inference Worker with Counts",
+  "author": "Max-Malte Hansen",
+  "version": "1.0.0",
+
+  "runSpec": {
+    "interpreter": "bash",
+    "file": "entrypoint.sh",
+    "distribution": "Ubuntu",
+    "release": "20.04",
+    "version": "0"
+  },
+
+  "inputSpec": [
+    { "name": "sample_zip", "class": "file" },
+    { "name": "weights", "class": "file" },
+    { "name": "params_json", "class": "file" },
+    { "name": "out_root", "class": "string" }
+  ],
+
+  "outputSpec": [
+    { "name": "plaque_counts", "class": "file" },
+    { "name": "image_level", "class": "file" },
+    { "name": "manifest", "class": "file" },
+    { "name": "image_level_errors", "class": "file", "optional": true }
+  ]
+}

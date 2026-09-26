@@ -1,0 +1,91 @@
+\chapter*{Code Availability}
+\addcontentsline{toc}{chapter}{Code Availability}
+
+All code written for this thesis is available at
+\todo{Insert the repository URL and state the licence. If the repository is private, say under
+what conditions it can be made available, and give the commit hash or release tag corresponding
+to the results reported here so that the version is unambiguous.}
+
+\section*{Scripts}
+
+The repository follows the two-block division used in this thesis: \texttt{block1\_cohort}
+holds the work carried out on UK Biobank, \texttt{block2\_detection} the work on Ar-PlaqSegm1.
+Each block separates scripts from results, and data locations are resolved centrally by
+\texttt{common/paths.py} so that the scripts run independently of the working directory. The
+pipeline is organised as standalone scripts rather than notebooks, so that each stage can be
+re-run without manual intervention.
+
+\begin{description}[leftmargin=2.8cm,style=nextline,nosep,itemsep=3pt]
+  \item[\texttt{preprocess\_ukb\_files.py}] Extracts the UK Biobank image archives and writes the
+        manifest consumed by the inference script.
+  \item[\texttt{run\_plaque\_inference.py}] Applies the base detection model across the manifest
+        and writes image-level detections and per-participant plaque counts.
+  \item[\texttt{merge\_main\_axis.py}] Aggregates the long-axis selection into per-participant
+        image counts.
+  \item[\texttt{prepare\_yolo\_seg\_dataset.py}] Converts the Ar-PlaqSegm1 masks into YOLO
+        polygon labels and writes the stratified training and validation split.
+  \item[\texttt{prepare\_yolo\_det\_dataset.py}] Derives the corresponding bounding-box dataset
+        used for the detection control.
+  \item[\texttt{finetune\_yolo\_seg.py}] Fine-tunes the segmentation models; the four reported
+        configurations differ only in the arguments given on the command line.
+  \item[\texttt{finetune\_yolo\_det.py}] Trains the detection and no-copy-paste controls under an
+        otherwise identical schedule.
+  \item[\texttt{evaluate\_seg\_testset.py}] Evaluates a checkpoint on the held-out test partition
+        and writes the confidence sweep and per-image results.
+  \item[\texttt{compare\_variants.py}] Evaluates single models and pooled combinations on a
+        common image set.
+  \item[\texttt{threshold\_on\_val.py}] Implements the threshold protocol: selects the operating
+        point on the validation split and reports the resulting test figures alongside the
+        test-optimised ones.
+  \item[\texttt{rescore\_instances.py}] Fits and evaluates the post-hoc instance re-scorer.
+  \item[\texttt{make\_appendix\_gallery.py}] Renders the prediction sheets of
+        Section~\ref{sec:appendix-gallery}, re-deriving the operating point from the validation
+        split so that the panels and the reported figures cannot diverge.
+  \item[\texttt{make\_pr\_curves.py}] Computes the instance-level precision-recall curves of
+        Section~\ref{sec:appendix-training} from the validation split.
+  \item[\texttt{make\_qualitative\_figure.py},\\\texttt{make\_echogenicity\_figure.py}]
+        Render the image figures of Chapters~\ref{ch:introduction} and \ref{ch:results} from the
+        dataset and the model checkpoints, so that every panel and every number printed on it is
+        recomputed rather than transcribed.
+  \item[\texttt{run\_cv.py}] Cross-validation over the full development set; provided for the
+        continuation described in Section~\ref{sec:conclusion-outlook} and not used for the
+        results reported here.
+\end{description}
+
+\section*{Software Environment}
+
+Results were produced with Python 3.12 and the following package versions.
+
+\begin{table}[H]
+\centering
+\caption[Software versions]{Package versions used for all reported results.}
+\label{tab:software}
+\begin{tabular}{ll}
+\hline
+Package & Version \\
+\hline
+\texttt{ultralytics} \cite{jocher2023ultralytics} & 8.3.248 \\
+\texttt{torch} & 2.9.1 \\
+\texttt{torchvision} & 0.24.1 \\
+\texttt{opencv-python} & 4.12.0.88 \\
+\texttt{numpy} & 2.2.6 \\
+\texttt{pandas} & 2.3.3 \\
+\texttt{scikit-learn} & 1.9.0 \\
+\texttt{scipy} & 1.17.1 \\
+\texttt{matplotlib} & 3.9.2 \\
+\hline
+\end{tabular}
+\end{table}
+
+Model training used the Metal Performance Shaders backend on Apple silicon; the cohort-scale
+inference of Section~\ref{sec:reproduction} ran on cloud instances provided by the UK Biobank
+Research Analysis Platform.
+The gradient-boosted tree ensemble of Phase 1A used the XGBoost package as provided by the
+Research Analysis Platform; the version string is not recoverable now that access has ended, and
+is therefore not stated.
+
+\section*{Data}
+
+Ar-PlaqSegm1 is publicly available \cite{rulloni2025arplaqsegm1}. UK Biobank data cannot be
+redistributed and are accessible only through the Research Analysis Platform under an approved
+application.

@@ -1,0 +1,36 @@
+\chapter*{Zusammenfassung}
+\addcontentsline{toc}{chapter}{Zusammenfassung}
+
+Karotisplaque gilt als Marker der systemischen Atherosklerose, ist in Populationskohorten aber
+nicht als Variable erfasst: Er liegt nur implizit vor, in Ultraschallbildern, die niemand
+befundet hat. Jede Analyse, die Plaque mit molekularen Daten in Beziehung setzt, muss den
+Phänotyp daher zunächst mit einem Modell erzeugen und ist durch die Güte dieses Schrittes
+begrenzt. Die vorliegende Arbeit sucht nach Plasmaproteinen, die mit subklinischer
+Karotisatherosklerose assoziiert sind, und untersucht die Messung, von der eine solche Suche
+abhängt.
+
+Ein publiziertes Detektionsmodell wurde auf den gesamten Karotis-Ultraschallbestand der UK
+Biobank angewandt und lieferte Detektionen für 179{.}611 Bilder von 20{.}014 Teilnehmenden bei
+einer Plaqueprävalenz von 43,0\,\% gegenüber den ursprünglich berichteten 45\,\%. Gegen das
+Olink-Proteompanel geprüft, zeigte dieser Phänotyp in den 2{.}542 Teilnehmenden mit beiden
+Messungen keine Assoziation, die die Korrektur für multiples Testen überstand: 151 von 2{.}923
+Proteinen erreichten nominelle Signifikanz, wo 146 zufällig zu erwarten sind, und der beste
+Klassifikator erzielte eine kreuzvalidierte ROC-AUC von 0,541 gegenüber 0,551 für Alter und
+Geschlecht allein. Das Alter war in denselben Daten signifikant assoziiert, was belegt, dass das
+Verfahren Assoziationen findet, wo welche vorliegen.
+
+Da ein fehlklassifizierter Prädiktor Assoziationen proportional zum Youden-Index $J$ abschwächt,
+wurde das Modell anschließend außerhalb seiner Entwicklungskohorte geprüft, auf einem
+öffentlichen argentinischen Datensatz. Seine Spezifität fiel von 89,2\,\% auf 62,5\,\%, während
+die Sensitivität lediglich von 89,5\,\% auf 83,3\,\% zurückging. Auf diesem Datensatz
+feinjustierte Instanzsegmentierungsmodelle hoben $J$ von 0,458 auf 0,625, das Zusammenführen
+zweier Modelle auf 0,667, wobei alle Arbeitspunkte auf den Validierungs- und nicht auf den
+Testdaten gewählt wurden. Eine auf denselben Bildern trainierte Detektorkontrolle erreichte
+dasselbe Niveau, womit die Verbesserung der Domänenanpassung und nicht der
+Segmentierungsformulierung zuzuschreiben ist.
+
+Wählt man die am besten passende vorhergesagte Instanz unabhängig von ihrem Konfidenzwert, steigt
+der mittlere Dice-Koeffizient von 0,655 auf 0,794, und kein Bild bleibt ohne korrekte Maske: Die
+Modelle umreißen Plaques, die sie nicht melden. Ursache ist die Gewichtung der Zielfunktion, in
+der der Konfidenzterm fünfundzwanzigmal niedriger gewichtet war als die geometrischen Terme. Die
+begrenzende Komponente ist somit die Entscheidung auf Bildebene, nicht die Segmentierungsgüte.

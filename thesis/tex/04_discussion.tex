@@ -1,0 +1,480 @@
+\chapter{Discussion}
+\label{ch:discussion}
+
+\section{Why the Proteomic Analysis Found No Signal}
+\label{sec:discussion-phase1a}
+
+Neither the univariate screen nor any of the classifiers recovered an association between the
+model-derived plaque phenotype and the plasma proteome. Two explanations are available, they
+operate at different levels, and the design of this study cannot separate them.
+
+\subsection{A Biological Explanation}
+
+The first explanation is that established subclinical carotid plaque simply does not produce a
+detectable systemic protein signature. Atherosclerosis develops over decades, and the lesions
+imaged here are, by the nature of a population imaging cohort, clinically silent. There is no
+acute event to detect: no rupture, no thrombus, no inflammatory flare of the kind that would
+plausibly register in circulation. What is present instead is a slow, focal accumulation in a
+vessel wall, small in absolute terms against the volume of plasma into which anything it releases
+would be diluted. A process may be consequential without being measurable, and subclinical plaque
+is a plausible instance of that: large in its eventual clinical implications, small in its
+contemporaneous biochemical footprint.
+
+The strongest support for this reading comes from within the analysis itself. Age produced a
+visible gradient in the leading principal components of the same protein matrix and remained
+significantly associated after correction for multiple testing, while plaque status produced
+neither. The same cohort, the same measurements and the same procedure detect one and not the
+other. The proteome, on this evidence, reflects systemic physiological state rather than the
+presence of a focal lesion.
+
+One consideration qualifies the dilution argument. Carotid plaque is generally regarded not as an
+isolated local finding but as a marker of systemic atherosclerosis, since subclinical disease is
+typically present in several vascular territories at once \cite{fernandezfriera2015pesa}; a
+participant with carotid plaque is therefore likely to carry coronary and aortic disease as well. The relevant burden is therefore
+larger than the imaged lesion, and the argument from lesion volume holds only to the extent that
+the carotid finding is a poor index of total atherosclerotic burden. Subclinical atherosclerosis
+at the carotid and femoral sites is associated with coronary calcification
+\cite{laclaustra2016femoral}, which suggests the carotid finding indexes more than itself.
+
+\subsection{A Complication from the Same Cohort}
+
+A strong form of the biological explanation is difficult to sustain. In the same UK Biobank
+cohort, \textcite{omarov2024deep} report a genome-wide association study of carotid plaque whose
+downstream analyses implicate lipoprotein(a) and interleukin-6 signalling, both of which have
+been pursued as drug targets. Both are measurable in plasma, and both are present in the
+Olink panel used here, as are interleukin-6 receptor, apolipoprotein B, PCSK9 and several matrix
+metalloproteinases. The proteins that a causal analysis identifies in this cohort were therefore
+measured in this analysis, and none of them emerged.
+
+The resolution lies in the direction of inference. Mendelian randomisation identifies causes, not
+consequences: lipoprotein(a) and interleukin-6 are upstream determinants that drive plaque
+formation over decades, and a cross-sectional proteomic association would recover them only if
+their effect on prevalent plaque status were large enough to survive both attenuation and
+correction across 2{,}923 tests.
+
+Two clinical results reported while this thesis was being written illustrate the same gap from
+the other direction, and they concern precisely these two pathways. ZEUS, a phase III trial of
+the interleukin-6 antibody ziltivekimab in more than 6{,}300 patients with atherosclerotic
+disease, chronic kidney disease and raised C-reactive protein
+\cite{ridker2026zeusdesign}, achieved the expected reduction in interleukin-6 signalling but
+reported a hazard ratio of 0.99 (95\,\% CI 0.88--1.11) for major adverse cardiovascular events
+\cite{novonordisk2026zeus, yao2026zeuscommentary}. Lp(a)HORIZON, a phase III trial of
+pelacarsen in 8{,}323 patients with elevated lipoprotein(a) and established cardiovascular
+disease \cite{cho2025horizondesign}, lowered lipoprotein(a) but did not meet its primary
+endpoint of reducing cardiovascular events \cite{novartis2026pelacarsen}. Both targets were engaged; neither produced the
+anticipated clinical benefit.
+
+Neither result overturns the genetic evidence, and neither should be read as doing so. Both
+trials lowered a long-standing exposure late, in patients whose disease was established and who
+were already receiving guideline-directed therapy. The trial designs are published, but the
+outcome data rest on company announcements: neither trial had reported in full at the time of
+writing, and both should be checked against the eventual publications. What they do is separate two claims that the
+genetic evidence alone does not distinguish: that a molecule contributes to how disease develops
+across a lifetime, and that its concentration at a given moment is informative about the disease
+that has developed. The same distinction governs the analysis performed here. A protein may shape
+how a lesion forms over decades without its level at a single blood draw carrying information
+about whether that lesion is now present. A molecule can be causal and still be a poor
+cross-sectional marker, and the two properties are established by different kinds of evidence.
+
+The claim that the present data support is consequently narrower than the one stated above. It is not that carotid atherosclerosis leaves no trace in blood, but
+that established subclinical plaque produces no proteomic signature detectable \emph{as a
+consequence} of its presence, under the sample size and phenotype quality available here.
+
+There is a further reason to expect a binary label to be the wrong instrument for this
+particular question. Interleukin-6 concentration is associated not with the presence of carotid
+plaque but with its echogenicity \cite{yamagami2004il6} -- that is, with a continuous property
+of the lesion's composition rather than with whether one is there at all. A phenotype that
+records only presence discards exactly that information. If the proteins implicated by the causal
+analysis relate to what a plaque is made of rather than to whether it exists, then no amount of
+statistical power applied to a binary label would recover them, and the appropriate phenotype
+would be a quantitative description of the lesion -- which is what a segmentation model, unlike a
+detector, is able to produce.
+
+The nominally significant proteins are of limited help in adjudicating this. Several are
+biologically plausible in context -- matrix metalloproteinase 12 is a macrophage elastase with an
+established role in plaque remodelling, and latent TGF-$\beta$ binding protein 2 and Fas ligand
+have connections to matrix turnover and apoptosis respectively. But all nine of the leading hits
+have between 1.6\,\% and 5.4\,\% missing values, against a panel median of 15.4\,\%. Better-measured
+proteins carry more information and therefore attract smaller $p$-values irrespective of biology,
+and median imputation compresses the variance of sparsely measured proteins and further reduces
+their detectability. The ranking is thus confounded with measurement completeness, and the
+apparent biological coherence of the top of the list should not be read as evidence.
+
+\subsection{A Measurement Explanation}
+
+The second explanation concerns the phenotype rather than the biology. The plaque labels are not
+measurements but model outputs, and a binary exposure measured with error biases estimated
+associations towards the null when the error is unrelated to the outcome
+\cite{bross1954misclassification, copeland1977bias}. For a binary exposure the attenuation is
+exact rather than approximate: the risk difference that such an analysis recovers is the true
+risk difference multiplied by the sensitivity and specificity of the classifier minus one --
+that is, by Youden's $J$, the same quantity used to evaluate the detection models in
+Chapter~\ref{ch:results}. The measure that evaluates the model is therefore also the factor by
+which it attenuates whatever the downstream analysis is looking for. On its own UK Biobank test
+set the base model attains $J = 0.787$, so roughly a fifth of any true association is lost before
+the analysis begins, and more than that on data unlike its development cohort. Combined with a Bonferroni threshold of
+$1.7 \times 10^{-5}$ and an analysis cohort of 2{,}542 participants, only a comparatively large
+effect could have been detected.
+
+The two explanations are not alternatives so much as statements about different links in the same
+chain, and both may hold simultaneously. What matters for the interpretation of this thesis is
+that its design cannot distinguish them. A null result is compatible with an absent signal and
+with a signal destroyed in measurement, and nothing in the analysis performed here separates the
+two cases.
+
+Phase 1B was, in retrospect, precisely the experiment that would have separated them. Relating an
+independently derived cardiovascular risk estimate to the same proteomic data would have placed
+the question on a phenotype not produced by the imaging model: an association there, alongside
+its absence for plaque status, would have implicated the phenotype; its absence in both would
+have implicated the proteomic data or the size of the cohort. That this comparison could not be
+carried out is the reason the question remains open.
+
+\subsection{An Alternative Design}
+
+Independently of which explanation holds, the design tested prevalent plaque against
+contemporaneously measured protein levels. If the proteome reflects the rate at which
+atherosclerosis is progressing rather than the burden that has accumulated, a cross-sectional
+comparison cannot detect it in principle. A design relating protein levels to incident plaque, or
+to progression between two imaging visits, addresses a different and arguably more appropriate
+question, and UK Biobank is in the process of assembling the data such a design would need: the
+repeat imaging project aims to re-scan 60{,}000 participants, of whom roughly 20{,}000 had
+attended by the end of 2025 \cite{ukbiobank_repeat_imaging}. Whether that resource supports a
+plaque-progression analysis depends on the repeat protocol including carotid ultrasound, which
+is a narrower question than whether repeat imaging exists.
+
+\section{External Validation and Domain Shift}
+\label{sec:discussion-domain-shift}
+
+The base model loses 6.2 percentage points of sensitivity and 26.7 of specificity when moved from
+the cohort it was developed on to Ar-PlaqSegm1. The asymmetry is the informative part. The model
+still finds the plaques that are present; what it loses is the ability to recognise their absence.
+
+\subsection{The Loss Is Not a Threshold Artefact}
+
+An obvious objection is that the confidence threshold of \textcite{omarov2024deep} was tuned on
+UK Biobank and simply does not transfer. The data answer this. At the threshold selected on the
+validation split the base model reaches $J = 0.458$; the best value attainable anywhere on the
+test set, with the threshold chosen on the test set itself, is 0.500. Re-tuning recovers 0.042 of
+the 0.329 that separates external from in-cohort performance. The remainder is a change in what
+the model represents, not in where its decision boundary is placed.
+
+\subsection{Why Specificity Rather Than Sensitivity}
+
+The composition of the external dataset offers a concrete explanation. Ar-PlaqSegm1 enrolled
+patients with mild, moderate or severe atherosclerosis and a vascular wall thickness exceeding
+1\,mm (Section~\ref{subsec:external-dataset}). Its plaque-free images are therefore not images of
+healthy vessels: they are images of thickened, diseased vessels that happen not to contain a
+focal plaque. In a population cohort the plaque-free class consists largely of unremarkable
+vessels, and a model trained there learns a correspondingly permissive notion of what counts as
+normal.
+
+This is consistent with what the fine-tuned models get wrong. Their shared false positives follow
+the vessel wall over an extended stretch and are systematically thinner than annotated plaques,
+20.7 pixels against 29.9 in median thickness. Thickened wall without focal protrusion is exactly
+the appearance that an enriched cohort supplies in quantity and a population cohort does not, and
+it is exactly the case in which the distinction between plaque and not-plaque is hardest.
+
+The asymmetry is not peculiar to this application. A lung ultrasound classifier developed at a
+single centre and evaluated on multicentre data retained a sensitivity of 0.92 while its
+specificity fell to 0.76, and fine-tuning on part of the external data raised specificity to 0.82
+without changing sensitivity \cite{wu2024generalizability}. The correspondence with the figures
+reported here is close: the base model retains 83.3\,\% sensitivity against 62.5\,\%
+specificity, and fine-tuning recovers specificity while sensitivity does not decline. What
+transfers across data sources appears to be the appearance of the lesion; what does not is the
+threshold separating it from a diseased but lesion-free background, which is a property of the
+population a model was trained on rather than of the pathology it was trained to recognise.
+
+\subsection{What the Shift Would Do to a Prevalence Estimate}
+
+The practical consequence for a phenotyping pipeline follows from the operating characteristics
+alone. A classifier reports a positive rate of $\text{Se} \cdot p + (1 - \text{Sp})(1 - p)$ for a
+true prevalence $p$. At the in-cohort values of 89.5\,\% and 89.2\,\%, a cohort with 45\,\% true
+prevalence would be reported at 46.2\,\% -- an error of roughly one percentage point. At the
+external values of 83.3\,\% and 62.5\,\%, the same cohort would be reported at 58.1\,\%.
+
+The calculation is an illustration of the mechanism rather than a projection. It assumes that
+sensitivity and specificity measured on a clinically enriched sample carry over to a population
+sample, which spectrum effects make unlikely -- and the preceding subsection argues that precisely
+this assumption fails here. What it does show is that a degradation of this size does not merely
+make individual classifications less reliable; it biases any aggregate derived from them in a
+predictable direction.
+
+\subsection{The Shift Is Not One Thing}
+
+Country, centre, device generation, operator, case mix and acquisition geometry differ
+simultaneously between the two datasets, and a single external dataset cannot separate their
+contributions. The heterogeneity documented in Section~\ref{subsec:external-dataset} shows that
+the last of these varies appreciably even within Ar-PlaqSegm1, across groups whose median
+grey-scale intensity differs by nearly a factor of two. What this thesis establishes is the
+magnitude of the aggregate shift between two specific datasets, and that it is large enough to
+matter for downstream use. Attributing it to particular causes would require external datasets
+that vary one factor at a time, which do not currently exist for this task.
+
+\section{What Limits the Fine-Tuned Models}
+\label{sec:discussion-calibration}
+
+Fine-tuning on target-domain data recovers roughly half the specificity lost to the shift, and
+pooling two models recovers a little more. Neither addresses what actually constrains the models,
+which the error analysis identifies as something other than segmentation quality.
+
+\subsection{The Masks Are Already There}
+
+Selecting, for each plaque-positive test image, the best-matching predicted instance irrespective
+of its confidence raises the mean Dice coefficient from 0.655 to 0.794 and leaves no image
+without a correct mask. The two images the pooled model appears to miss are both outlined
+accurately -- one at a Dice of 0.82 -- and both carry confidence scores three orders of magnitude
+below the operating threshold. Whatever limits these models, it is not their ability to delineate
+a plaque once they have attended to it.
+
+That this traces to a single training hyperparameter is worth stating plainly, because it is
+unglamorous and consequential in equal measure. With one class, the classification branch of the
+loss \emph{is} the confidence score, and it was weighted twenty-five times below the terms
+governing geometry. Raising the weight moved the median confidence of the correct instance from
+0.060 to 0.602. It also lowered the attainable Dice from 0.769 to 0.680 and left two images
+without any correct mask, so the setting trades one failure mode for the other rather than
+removing either.
+
+\subsection{Ranking Is Not the Binding Constraint}
+
+A natural response is to repair the ordering after training, and the attempt is instructive in
+failing. A re-scorer using geometry, position and local echo contrast improved the separation of
+correct from incorrect instances substantially, from an area under the curve of 0.681 to 0.823,
+and recovered both previously missed images. Image-level performance nonetheless fell, from
+$J = 0.667$ to 0.583, because specificity collapsed to 58.3\,\%.
+
+The reason is that the two objectives are different. Features describing what a plaque looks like
+identify genuine instances well, but a plaque-free image still elicits plaque-shaped proposals,
+and the same features promote those equally. The original confidence score, for all its
+miscalibration, encodes something the appearance features do not: whether there is anything there
+at all. The binding constraint is objectness, and no reordering of proposals can supply it.
+
+\subsection{What the Shared Errors Suggest}
+\label{sec:discussion-shared-errors}
+
+Five of the six false positives are produced by both models. Two networks differing in capacity,
+input resolution and training schedule converge on the same mistakes, which points away from the
+models and towards the data or the task definition. Under the Mannheim criterion \cite{touboul2012mannheim} a plaque is a
+focal protrusion exceeding 50\,\% of the \emph{surrounding} intima-media thickness -- a relative
+judgement requiring a comparison between a candidate region and its neighbourhood. A model that
+scores each region on its own appearance has no access to that comparison, and thickened
+non-focal wall is the case in which the omission shows.
+
+One candidate explanation can be set aside. Annotation variability is not the limiting factor:
+one image of the dataset occurs twice and carries two independently produced masks, which agree
+at a Dice coefficient of 0.971 -- well above the 0.62 to 0.79 the models achieve
+(Section~\ref{sec:results-duplicates}). A single pair is weak evidence, but it points away from label noise as the
+ceiling and towards the models themselves.
+
+If this reading is right, the shared error rate is a rough indication of what cannot be removed
+by better training under the present label definition, and improvement would have to come from
+encoding the criterion rather than from more capacity or more data. The inference is suggestive
+rather than established: two models is a thin basis for a claim about irreducible error, and the
+alternative explanation -- that both inherited the same bias from a shared COCO initialisation
+and a common augmentation scheme -- is not excluded by the evidence here.
+
+\subsection{A Methodological Note}
+
+The re-scoring result generalises beyond this application. An intervention that improved the
+ranking metric by 0.14 area under the curve degraded the decision that the ranking exists to
+support. Calibration methods are conventionally assessed on calibration metrics; where the model
+feeds a downstream decision, that decision is the only evaluation that settles whether the
+intervention helped.
+
+\section{Comparison with the Literature}
+\label{sec:discussion-literature}
+
+\subsection{How Much Non-Image Data Contributes}
+
+\textcite{stamos2025} addresses a question adjacent to Phase 1A: whether clinical and biochemical
+data, including protein biomarkers, add information to B-mode carotid ultrasound. Three fusion
+architectures were evaluated on 73 patients stratified into high- and low-risk groups by degree
+of stenosis. The result most relevant here is the decomposition. Imaging alone reached an area
+under the curve of 84.6\,\%; the tabular data alone, 64.6\,\%; their fusion, 86.1\,\%. A learned
+attention mechanism assigned 69.4\,\% of its weight to the imaging arm.
+
+Two observations follow. First, non-image data carrying only modest standalone signal for a
+carotid plaque phenotype is not peculiar to the present work: 64.6\,\% there and the 54.1\,\%
+obtained from proteomics here are different tasks on different data, but they occupy the same
+regime, well below what the image supplies. Second, and more consequentially, properly fused
+end-to-end the tabular data added 1.5 percentage points to an imaging-only model. If that is the
+scale of the available gain, then improving the imaging arm is the larger lever, which is the
+direction this thesis took for unrelated reasons.
+
+\subsection{Two Ways of Being Data-Limited}
+
+The two studies fail in opposite directions, and the contrast is instructive. \textcite{stamos2025}
+has clinically adjudicated risk labels and 73 patients: the ground truth is sound and the sample
+is too small to support strong conclusions, as an area under the curve of 86.1\,\% on 73 cases
+carries a wide interval. The present work has 20{,}014 participants and a phenotype produced by a
+model whose own external validation shows substantial error. Neither configuration permits the
+analysis both are reaching for. A study combining adjudicated labels with cohort-scale numbers
+does not presently exist for carotid plaque, and until it does, results in this area will be
+limited either by their labels or by their size.
+
+It is also worth noting that \textcite{stamos2025} is an instance of the pattern
+\textcite{omarov2024deep} identify as limiting the field: a cohort selected for carotid disease
+rather than drawn from a population. The concern they raise about generalisability applies to it,
+and symmetrically, the concern this thesis raises about phenotype quality applies to their own
+population-scale results.
+
+\subsection{Why the Obvious Comparison Is Unavailable}
+
+The fine-tuned ensemble reported here attains 91.7\,\% sensitivity and 75.0\,\% specificity;
+\textcite{omarov2024deep} report 89.5\,\% and 89.2\,\%. Setting these against one another would be
+a mistake. They come from different datasets with different case mixes, acquisition conditions and
+annotators, and the second set was obtained on the cohort the model was developed on while the
+first was not. The only comparison this thesis licenses is the one made on a single test partition
+in Section~\ref{sec:results-phase2}, where the base model and the fine-tuned models are evaluated
+on identical images under an identical protocol.
+
+The difficulty is not peculiar to these two studies. Every result cited in this chapter was
+obtained on data held by the group that produced it: \textcite{omarov2024deep} on UK Biobank,
+\textcite{stamos2025} on a cohort of 73 patients from one centre, and the present work on
+Ar-PlaqSegm1. Each is internally coherent and none can be placed on a common scale with the
+others. Reporting guidelines address the related but distinct question of whether a model was
+validated outside its development cohort \cite{collins2015tripod, mongan2020claim}; they do
+not make results from different external cohorts comparable to each other.
+
+What distinguishes the evaluation reported here is that its test data are public.
+Ar-PlaqSegm1 is openly available with a published partition \cite{rulloni2025arplaqsegm1}, so
+every figure in Chapter~\ref{ch:results} can be recomputed by others and any future model can be
+placed directly alongside them. That is a modest form of comparability, and extending it is the
+subject of Section~\ref{sec:conclusion-outlook}.
+
+\section{Limitations}
+\label{sec:discussion-limitations}
+
+\subsection{Adaptation, Not Formulation}
+\label{subsec:limitations-control}
+
+The comparison in Chapter~\ref{ch:results} places fine-tuned segmentation models against a
+detection model that was never adapted to Ar-PlaqSegm1. It therefore confounds two things: the
+change of formulation from bounding boxes to masks, and the adaptation to the target domain. A
+control experiment was run to separate them. A detector was trained on the same images, the same
+split and the same schedule as seg\_v2, differing only in its head and in the absence of
+copy-paste augmentation, which requires masks and is unavailable to a box model.
+
+The control reaches the same image-level performance as the segmentation models. At the threshold
+selected on validation it attains a sensitivity of 79.2\,\% and a specificity of 83.3\,\%
+($J = 0.625$) on the full test partition -- identical to seg\_v1, seg\_v2 and seg\_v3, with an
+error profile coinciding exactly with that of seg\_v3. Excluding the duplicated images it reaches
+$J = 0.583$, inside the range of 0.525 to 0.600 spanned by the four segmentation models. With 20
+plaque-positive images one image corresponds to 0.05 in $J$, so every difference among the
+fine-tuned models, the detector included, is smaller than a single image.
+
+What this thesis demonstrates is consequently narrower than it might appear. The improvement over
+the base model is attributable to adaptation to the target domain, not to the segmentation
+formulation; a detector given the same data performs as well. The domain-shift result in
+Section~\ref{sec:discussion-domain-shift} is unaffected, as is the calibration analysis, which
+concerns the internal behaviour of the segmentation models rather than their advantage over
+detection.
+
+One argument for the segmentation formulation survives the control, because the control cannot
+address it. A mask model yields lesion area and shape, and with them the Dice coefficients
+reported throughout Chapter~\ref{ch:results}; a detector produces none of these. Where the
+intended output is a binary phenotype the two formulations are interchangeable on this evidence,
+and where it is a quantitative description of the lesion they are not.
+
+A second control, a segmentation model trained without copy-paste augmentation, would have
+separated the head from the augmentation within the segmentation formulation. It was started but
+could not be completed, so the detector comparison above remains confounded with that
+augmentation. Given that the detector matches the segmentation models despite lacking it, the
+confound is unlikely to conceal an advantage rather than create one.
+
+\subsection{Duplicate Images and a Contaminated Validation Split}
+
+Two forms of leakage affect the results, one inherited and one introduced here.
+
+The published split places four plaque-positive images in both partitions
+(Section~\ref{subsec:duplicates}). Their effect on the reported figures is quantified in
+Section~\ref{sec:results-duplicates} and is small, but it is leakage nonetheless, and any
+published result computed on this test partition without deduplication carries the same
+optimism.
+
+The second is a consequence of how the development partition was divided here. The 493
+development images were split into training and validation strata by plaque presence, but not by
+image identity, and seven of the 22 duplicate groups internal to the development partition
+straddle that division. Roughly one validation image in ten is therefore a copy of a training
+image. Because the validation split selected both the best checkpoint and the confidence
+threshold, both selections are mildly optimistic. Correcting this requires deduplicating before
+splitting and retraining all configurations, which was not possible within the time available;
+the appropriate response is to treat the validation figures as selection scores rather than
+performance estimates, which is how they are used throughout.
+
+\subsection{The Test Partition Does Not Span the Dataset}
+
+The 48 test images are not a representative sample of Ar-PlaqSegm1. Grouping the images by
+acquisition geometry (Section~\ref{subsec:external-dataset}) shows that 93.8\,\% of the test
+partition falls into a single group, which makes up 52.1\,\% of the development partition, and
+that three groups comprising 196 development images -- 37.7\,\% of the material available for
+training -- are absent from the test partition altogether. The groups are visually and
+statistically distinct, differing in median intensity by a factor of nearly two.
+
+Every figure reported in Chapter~\ref{ch:results} therefore characterises performance on a narrow
+region of the acquisition conditions the dataset contains. The models were trained across all
+groups but evaluated on essentially one, and how they behave on the geometries absent from the
+test partition is unknown. This qualifies the external validation in a direction that is easy to
+overlook: evaluating on data from a different cohort establishes transfer across cohorts, but not
+transfer across the acquisition conditions within the new cohort.
+
+The observation also has a wider implication. If a published dataset that explicitly aims at
+diversity -- its authors list the inclusion of varied sizes, locations and multiple plaques as a
+design goal -- nonetheless distributes that diversity unevenly across its own partitions, then
+comparable imbalances should be expected in evaluation sets generally, including the one on which
+the base model was originally validated. Reporting the composition of a test partition, and not
+only its size, would make such limitations visible.
+
+
+\subsection{Statistical Resolution}
+
+The held-out test partition contains 24 plaque-positive and 24 plaque-negative images, and after
+excluding the duplicated images, 20 and 24. One image therefore corresponds to between 4.2 and
+5.0 percentage points of sensitivity. Differences smaller than that are not measurable, and most
+of the differences between the fine-tuned models are smaller than that: on the deduplicated set
+the four segmentation models and the detection control span $J = 0.525$ to $0.600$, a range of
+one and a half images.
+
+Statements in this thesis are worded to respect that limit, and the conclusions that rest on
+larger margins -- the gap to the base model, the size of the confidence-ranking effect -- are
+unaffected. But any reading of the results that ranks the fine-tuned variants against one
+another, or that treats the ensemble's advantage as established, exceeds what 44 images can
+support. Cross-validation over the full development set would give a spread rather than a point
+estimate, at a cost of a few training runs; it was not within the time available here.
+
+\subsection{Patient-Level Independence}
+
+The published split separates images, and the four duplicated images aside, no image occurs in
+both partitions. The dataset record does not state how many patients the 541 image pairs derive
+from, and patient-level independence has therefore not been established. If one patient
+contributed images to both partitions, the models would have seen that patient's anatomy,
+acquisition device and operator during training, and the test figures would be correspondingly
+optimistic. The partition is the dataset authors' own rather than a choice made here, but the
+limitation applies to the results regardless of who introduced it.
+
+\subsection{Analytical Choices in Phase 1A}
+
+Two decisions in the proteomic analysis would be made differently on repetition. Imputation and
+standardisation were fitted on the full analysis cohort rather than within each cross-validation
+fold, which leaks information across the folds; because both operations are unsupervised and the
+bias runs towards optimistic performance, the null result reported is if anything conservative.
+More consequentially, the clinical baseline used age at recruitment where age at the imaging
+visit is the variable matched to the phenotype. The interval between the two is several years and
+varies between participants, so the covariate is both shifted and noisy relative to the outcome
+it is paired with, and the weak performance of the age-and-sex baseline cannot be cleanly
+attributed to the phenotype until the analysis is repeated with the correct variable.
+
+\subsection{One External Dataset}
+
+External validation here rests on a single independent dataset. What the results establish is
+that the base model transfers imperfectly to Ar-PlaqSegm1, and that fine-tuning on Ar-PlaqSegm1
+recovers part of the loss. Whether the same would hold for a third dataset -- and how much of the
+observed shift is attributable to country, centre, device, case mix or annotation practice --
+cannot be determined from one comparison. A conclusion about external validity in general would
+require several external datasets, as set out in Section~\ref{sec:conclusion-outlook}.
+
+Annotation practice is the one component for which a partial estimate is available. The
+duplicated image pair carrying two independently produced masks
+(Section~\ref{sec:results-duplicates}) shows agreement at a Dice coefficient of 0.971, which
+suggests that annotation variability within this dataset is small relative to the model errors
+reported. A single pair is a thin basis for that, and no inter-reader agreement statistics are
+published with the dataset.

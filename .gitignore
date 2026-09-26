@@ -1,20 +1,51 @@
-# weights/data/results
-*.pt
-*.csv
-*.parquet
-runs/
-*.png
-*.jpg
+# ---------------------------------------------------------------------------
+# UK Biobank data. Individual-level data may not leave the Research Analysis
+# Platform; nothing derived from it belongs in this repository.
+# ---------------------------------------------------------------------------
+ukb_*.csv
+analysis/proteomics/
+block1_cohort/results/scan_output/
+thesis/figures/ukb_pic/
+*.dcm
 *.zip
 
-# notebook junk
-.ipynb_checkpoints/
+# Datasets, model checkpoints and training output
+block2_detection/data/
+block2_detection/assets/
+*.pt
+
+# Generated results
+block2_detection/results/
+*.csv
+*.parquet
+*.log
+
+# Build and editor artefacts
 __pycache__/
-
-# env
+.ipynb_checkpoints/
 .venv/
+.idea
+.DS_Store
+.Rhistory
+*.app/
+*.bak.*
 
-# plotting and presentation graphics
-testing_and_plotting/**
-usPlaqueDetection/weights/**
-usPlaqueDetection/out/**
+# Thesis build products
+thesis/**/*.aux
+thesis/**/*.bbl
+thesis/**/*.bcf
+thesis/**/*.blg
+thesis/**/*.fdb_latexmk
+thesis/**/*.fls
+thesis/**/*.lof
+thesis/**/*.lot
+thesis/**/*.out
+thesis/**/*.run.xml
+thesis/**/*.synctex.gz
+thesis/**/*.toc
+
+# Reference material, not part of the submission
+reference/
+testing_and_plotting/
+*.pdf
+!thesis/**/*.pdf
