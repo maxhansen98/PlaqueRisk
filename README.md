@@ -12,6 +12,16 @@ The work asks whether circulating proteins carry a detectable signature of subcl
 atherosclerosis, and examines the imaging model that produces the phenotype such a search
 depends on.
 
+<p align="center">
+  <img src="thesis/figures/annotation_conversion.png" alt="Mask, polygon and bounding box representation of one annotated plaque" width="100%">
+</p>
+
+<p align="center">
+  <sub>One annotated plaque in the three representations the pipeline can use. The annotation is
+  a pixel mask; a bounding box around a structure of this shape is mostly non-plaque, which is why
+  the models fine-tuned here are segmentation rather than detection models.</sub>
+</p>
+
 ## Repository layout
 
 The two blocks follow the division used in the thesis: the first works at cohort scale on UK
