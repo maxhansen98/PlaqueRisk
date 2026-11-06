@@ -3,6 +3,8 @@
 **Author:** Max-Malte Hansen
 **Advisor:** M.Sc. Korbinian Träuble · **Supervisor:** Dr. Matthias Heinig
 
+**Final grading:** A (first-class)
+
 Code and thesis for a bachelor's project carried out at the
 [Heinig Lab, Helmholtz Munich](https://www.helmholtz-munich.de/en/icb/research-groups/heinig-lab),
 within the [Bioinformatics B.Sc. programme](https://www.tum.de/studium/studienangebot/detail/bioinformatik-bachelor-of-science-bsc)
